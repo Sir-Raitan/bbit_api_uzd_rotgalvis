@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33414.496
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bbit_2_uzd", "bbit_2_uzd\bbit_2_uzd.csproj", "{AB27F2EE-22D6-451F-9B01-3ACA2A3D5824}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AB27F2EE-22D6-451F-9B01-3ACA2A3D5824}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB27F2EE-22D6-451F-9B01-3ACA2A3D5824}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB27F2EE-22D6-451F-9B01-3ACA2A3D5824}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB27F2EE-22D6-451F-9B01-3ACA2A3D5824}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B3B36AE8-775A-49C5-9772-008DCB18DCD2}
+	EndGlobalSection
+EndGlobal
