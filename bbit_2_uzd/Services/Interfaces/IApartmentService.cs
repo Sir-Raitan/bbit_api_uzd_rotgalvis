@@ -6,6 +6,8 @@ namespace bbit_2_uzd.Services.Interfaces
     public interface IApartmentService
     {
         public Task<IEnumerable<Apartment>> GetAllApartments();
+        
+        public Task<IEnumerable<Apartment>> GetApartmentsFromHouse(Guid id);
 
         public Task<ApartmentResponse> GetApartment(Guid id);
 

@@ -1,8 +1,7 @@
 ﻿namespace bbit_2_uzd.Models.DTO
 {
-    public class HouseDTO
+    public class HouseModifyDTO
     {
-        public Guid Id { get; set; }
         public int Number { get; set; }
         public string Street { get; set; }
         public string City { get; set; }

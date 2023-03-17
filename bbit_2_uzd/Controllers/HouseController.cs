@@ -52,12 +52,12 @@ namespace bbit_2_uzd.Controllers
         // PUT: api/Majas/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("Update/{id}")]
-        public async Task<IActionResult> PutHouse(Guid id, HouseDTO house)
+        public async Task<IActionResult> PutHouse(Guid id, HouseModifyDTO house)
         {
             House updatedHouse;
             try
             {
-                updatedHouse = _mapper.Map<HouseDTO, House>(house);
+                updatedHouse = _mapper.Map<HouseModifyDTO, House>(house);
             }
             catch (AutoMapperMappingException e)
             {
@@ -81,12 +81,12 @@ namespace bbit_2_uzd.Controllers
         // POST: api/Majas
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("Create")]
-        public async Task<ActionResult<HouseDTO>> PostHouse(HouseDTO house)
+        public async Task<ActionResult<HouseDTO>> PostHouse(HouseModifyDTO house)
         {
             House newHouse;
             try
             {
-                newHouse = _mapper.Map<HouseDTO, House>(house);
+                newHouse = _mapper.Map<HouseModifyDTO, House>(house);
             }
             catch (AutoMapperMappingException e)
             {
@@ -104,7 +104,7 @@ namespace bbit_2_uzd.Controllers
                 return this.ResolveError(response.StatusCode, response.Message);
             }
 
-            HouseDTO houseFinal = _mapper.Map<House, HouseDTO>(response.Resource);
+            HouseModifyDTO houseFinal = _mapper.Map<House, HouseModifyDTO>(response.Resource);
 
             return CreatedAtAction("GetHouse", new { id = response.Resource.Id }, houseFinal);
         }

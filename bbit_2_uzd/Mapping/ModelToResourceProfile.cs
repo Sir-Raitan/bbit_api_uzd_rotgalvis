@@ -9,6 +9,7 @@ namespace bbit_2_uzd.Mapping
         public ModelToResourceProfile()
         {
             CreateMap<House, HouseDTO>();
+            CreateMap<House, HouseModifyDTO>();
             CreateMap<Apartment, ApartmentModifyDTO>();
             CreateMap<Apartment, ApartmentGetDTO>();
             CreateMap<Tenant, TenantModifyDTO>();

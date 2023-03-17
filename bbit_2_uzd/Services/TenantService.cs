@@ -19,6 +19,10 @@ namespace bbit_2_uzd.Services
         {
             return await _context.Tenants.Include(t => t.TenantApartments).ToListAsync();
         }
+        public async Task<IEnumerable<Tenant>> GetTenantsWithApartment(Guid id)
+        {
+            return await _context.Tenants.Include(t => t.TenantApartments).Where(t => t.TenantApartments.Any(a => a.Id == id)).ToListAsync();
+        }
 
         public async Task<TenantResponse> GetTenant(Guid id)
         {

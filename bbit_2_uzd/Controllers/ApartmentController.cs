@@ -24,13 +24,21 @@ namespace bbit_2_uzd.Controllers
 
         // GET: api/Dzivokli
         [HttpGet("GetAll")]
-        public async Task<IEnumerable<ApartmentGetDTO>> GetAllApartments()
+        public async Task<IEnumerable<ApartmentGetDTO>> GetAllApartments(Guid? house_id)
         {
-            var apartmentsRaw = await _apartmentService.GetAllApartments();
+            if (house_id != null)
+            {
+                var apartmentsRaw = await _apartmentService.GetApartmentsFromHouse((Guid)house_id);
 
-            var apartments = _mapper.Map<IEnumerable<Apartment>, IEnumerable<ApartmentGetDTO>>(apartmentsRaw);
+                var apartments = _mapper.Map<IEnumerable<Apartment>, IEnumerable<ApartmentGetDTO>>(apartmentsRaw);
 
-            return apartments;
+                return apartments;
+            }
+            var allApartmentsRaw = await _apartmentService.GetAllApartments();
+
+            var allApartments = _mapper.Map<IEnumerable<Apartment>, IEnumerable<ApartmentGetDTO>>(allApartmentsRaw);
+
+            return allApartments;
         }
 
         // GET: api/Dzivokli/5

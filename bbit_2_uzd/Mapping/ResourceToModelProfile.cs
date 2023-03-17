@@ -12,6 +12,7 @@ namespace bbit_2_uzd.Mapping
             CreateMap<Guid, Apartment>().ConvertUsing(typeof(IdToApartmentConverter));
 
             CreateMap<HouseDTO, House>();
+            CreateMap<HouseModifyDTO, House>();
             CreateMap<ApartmentModifyDTO, Apartment>();
             CreateMap<ApartmentGetDTO, Apartment>();
             CreateMap<TenantModifyDTO, Tenant>().ForMember(i => i.TenantApartments, opt => opt.MapFrom(src => src.ApartmnetsId));

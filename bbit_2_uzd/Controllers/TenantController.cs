@@ -23,14 +23,22 @@ namespace bbit_2_uzd.Controllers
         }
 
         // GET: api/Iedzivotaji
-        [HttpGet("GatAll")]
-        public async Task<IEnumerable<TenantGetDTO>> GetAllTenants()
+        [HttpGet("GetAll")]
+        public async Task<IEnumerable<TenantGetDTO>> GetAllTenants(Guid? apartment_id)
         {
-            var tenantsRaw = await _tenantService.GetAllTenants();
+            if (apartment_id != null) 
+            {
+                var tenantsRaw = await _tenantService.GetTenantsWithApartment((Guid)apartment_id);
 
-            var tenants = _mapper.Map<IEnumerable<Tenant>, IEnumerable<TenantGetDTO>>(tenantsRaw);
+                var tenants = _mapper.Map<IEnumerable<Tenant>, IEnumerable<TenantGetDTO>>(tenantsRaw);
 
-            return tenants;
+                return tenants;
+            }
+            var allTenantsRaw = await _tenantService.GetAllTenants();
+
+            var allTenants = _mapper.Map<IEnumerable<Tenant>, IEnumerable<TenantGetDTO>>(allTenantsRaw);
+
+            return allTenants;
         }
 
         // GET: api/Iedzivotaji/5
