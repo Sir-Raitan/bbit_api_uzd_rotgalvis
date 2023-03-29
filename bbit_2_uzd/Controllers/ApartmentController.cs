@@ -4,6 +4,7 @@ using bbit_2_uzd.Models;
 using bbit_2_uzd.Models.DTO;
 using bbit_2_uzd.Services.Communication;
 using bbit_2_uzd.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -11,6 +12,7 @@ namespace bbit_2_uzd.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize("ApiScope")]
     public class ApartmentController : ControllerBase
     {
         private readonly IApartmentService _apartmentService;

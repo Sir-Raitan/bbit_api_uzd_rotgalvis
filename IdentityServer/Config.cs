@@ -15,7 +15,7 @@ public static class Config
     public static IEnumerable<ApiScope> ApiScopes =>
         new List<ApiScope>
         {
-            new ApiScope("api1", "My API")
+            new ApiScope("api", "API")
         };
 
     public static IEnumerable<Client> Clients =>
@@ -35,7 +35,7 @@ public static class Config
                 },
 
                 // scopes that client has access to
-                AllowedScopes = { "api1" }
+                AllowedScopes = { "api" }
             },
             // interactive ASP.NET Core Web App
             new Client

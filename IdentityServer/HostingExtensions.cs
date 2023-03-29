@@ -11,38 +11,36 @@ internal static class HostingExtensions
 {
     private static void InitializeDatabase(IApplicationBuilder app)
     {
-        using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+        using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
+        serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+
+        var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+        context.Database.Migrate();
+        if (!context.Clients.Any())
         {
-            serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
-
-            var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
-            context.Database.Migrate();
-            if (!context.Clients.Any())
+            foreach (var client in Config.Clients)
             {
-                foreach (var client in Config.Clients)
-                {
-                    context.Clients.Add(client.ToEntity());
-                }
-                context.SaveChanges();
+                context.Clients.Add(client.ToEntity());
             }
+            context.SaveChanges();
+        }
 
-            if (!context.IdentityResources.Any())
+        if (!context.IdentityResources.Any())
+        {
+            foreach (var resource in Config.IdentityResources)
             {
-                foreach (var resource in Config.IdentityResources)
-                {
-                    context.IdentityResources.Add(resource.ToEntity());
-                }
-                context.SaveChanges();
+                context.IdentityResources.Add(resource.ToEntity());
             }
+            context.SaveChanges();
+        }
 
-            if (!context.ApiScopes.Any())
+        if (!context.ApiScopes.Any())
+        {
+            foreach (var resource in Config.ApiScopes)
             {
-                foreach (var resource in Config.ApiScopes)
-                {
-                    context.ApiScopes.Add(resource.ToEntity());
-                }
-                context.SaveChanges();
+                context.ApiScopes.Add(resource.ToEntity());
             }
+            context.SaveChanges();
         }
     }
 
@@ -64,6 +62,7 @@ internal static class HostingExtensions
                 options.ConfigureDbContext = b => b.UseSqlite(connectionString,
                     sql => sql.MigrationsAssembly(migrationsAssembly));
             });
+            //.AddTestUsers(TestUsers.Users); ;
 
         builder.Services.AddAuthentication()
             .AddOpenIdConnect("oidc", "Demo IdentityServer", options =>
@@ -102,7 +101,7 @@ internal static class HostingExtensions
         app.UseIdentityServer();
 
         app.UseAuthorization();
-        app.MapRazorPages().RequireAuthorization();
+        //app.MapRazorPages().RequireAuthorization();
 
         return app;
     }
