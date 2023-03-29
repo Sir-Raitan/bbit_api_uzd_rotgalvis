@@ -70,27 +70,27 @@ namespace IdServer
                 scope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
 
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-
-                //if (userManager.FindByNameAsync("janis.tests").Result == null)
-                //{
-                //    var i =userManager.CreateAsync(new ApplicationUser { 
-                //        FirstName="Janis",
-                //        LastName="Tests",
-                //        UserName="janis.tests",
-                //        Email="Janis.tests@fake.com"
-                //    },"Passw0rd").Result;
-                //}
+                if (userManager.FindByNameAsync("janis.tests") == null)
+                {
+                    userManager.CreateAsync(new ApplicationUser
+                    {
+                        FirstName = "Janis",
+                        LastName = "Tests",
+                        UserName = "janis.tests",
+                        Email = "Janis.tests@fake.com"
+                    }, "Passw0rd");
+                }
 
                 var context = scope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
                 context.Database.Migrate();
-                //if (!context.ApiResources.Any())
-                //{
-                //    foreach (var resource in Config.ApiScopes)
-                //    {
-                //        context.ApiScopes.Add(resource.ToEntity());
-                //    }
-                //    context.SaveChanges();
-                //}
+                if (!context.ApiResources.Any())
+                {
+                    foreach (var resource in Config.ApiResources)
+                    {
+                        context.ApiResources.Add(resource.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
 
                 if (!context.ApiScopes.Any())
                 {

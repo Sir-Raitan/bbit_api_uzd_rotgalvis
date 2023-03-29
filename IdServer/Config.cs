@@ -37,10 +37,9 @@ namespace IdServer
                     {
                         new Secret("secret".Sha256())
                     },
-
                     // scopes that client has access to
                     AllowedScopes = { "https://localhost:7299/api" },
-                    AllowedCorsOrigins = { "https://api:7299" }
+                    AllowedCorsOrigins = { "https://localhost:7299" }
                 },
                 // interactive Web App
                 new Client
