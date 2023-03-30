@@ -44,6 +44,12 @@ namespace IdServer
                     sql => sql.MigrationsAssembly(migrationsAssembly));
             });
 
+            builder.Services.AddCors(options => options.AddPolicy(
+                name: "AllowWebAppConnection",
+                policy => {
+                    policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+                }
+                ));
             //add server ui
             builder.Services.AddRazorPages();
 
@@ -55,6 +61,7 @@ namespace IdServer
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseCors("AllowWebAppConnection");
 
             app.UseIdentityServer();
             app.UseAuthorization();
