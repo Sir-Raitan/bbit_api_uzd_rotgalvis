@@ -69,18 +69,22 @@ namespace IdServer
                 scope.ServiceProvider.GetRequiredService<ConfigurationDbContext>().Database.Migrate();
                 scope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
 
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-                if (userManager.FindByNameAsync("janis.tests") == null)
+                //create users
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                string[] roles = new string[] { "Manager", "Resident", "Admin" };
+                if (!roleManager.Roles.Any())
                 {
-                    userManager.CreateAsync(new ApplicationUser
+                    foreach (string role in roles)
                     {
-                        FirstName = "Janis",
-                        LastName = "Tests",
-                        UserName = "janis.tests",
-                        Email = "Janis.tests@fake.com"
-                    }, "Passw0rd");
+                        roleManager.CreateAsync(new IdentityRole(role)).Wait();
+                    }
                 }
 
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+
+                SeedUser(UserConfig.ManagerUser, userManager, "Manager").Wait();
+                SeedUser(UserConfig.ResidentUser, userManager, "Resident").Wait();
+                //create connection related stuff
                 var context = scope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
                 context.Database.Migrate();
                 if (!context.ApiResources.Any())
@@ -121,6 +125,17 @@ namespace IdServer
             }
 
             app.Run();
+        }
+        static async Task SeedUser(ApplicationUser user, UserManager<ApplicationUser> userManager, string? role = null) 
+        {
+            if (await userManager.FindByNameAsync(user.UserName) == null)
+            {
+                var result = await userManager.CreateAsync(user, "Passw0rd!");
+                if (result.Succeeded && role != null)
+                {
+                    await userManager.AddToRoleAsync(user, role);
+                }
+            }
         }
     }
 }
