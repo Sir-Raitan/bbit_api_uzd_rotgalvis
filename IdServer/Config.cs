@@ -79,7 +79,7 @@ namespace IdServer
                     },
                     AllowedCorsOrigins = { "https://localhost:4200" },
 
-                    RedirectUris = { "https://localhost:4200/authentication/login-callback" },
+                    RedirectUris = { "https://localhost:4200/" },
                     PostLogoutRedirectUris = { "https://localhost:4200/authentication/logout-callback" }
                 }
             };
