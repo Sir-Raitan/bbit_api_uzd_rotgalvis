@@ -4,6 +4,7 @@ using bbit_2_uzd.Services;
 using bbit_2_uzd.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace bbit_2_uzd
@@ -30,13 +31,21 @@ namespace bbit_2_uzd
                     options.TokenValidationParameters.ValidateAudience = true;
                     options.TokenValidationParameters.ValidateIssuer = true;
                     options.TokenValidationParameters.ValidateIssuerSigningKey = true;
+
                 });
             builder.Services.AddAuthorization(options =>
-                    options.AddPolicy("ApiScope", policy =>
                     {
-                        policy.RequireAuthenticatedUser();
-                        policy.RequireClaim("scope", "https://localhost:7299/api");
-                    })
+                        options.AddPolicy("ApiScope", policy =>
+                        {
+                            policy.RequireAuthenticatedUser();
+                            policy.RequireClaim("scope", "https://localhost:7299/api");
+                        });
+                        options.AddPolicy("RequireManagerPrivileges", policy => 
+                        {
+                            policy.RequireAuthenticatedUser();
+                            policy.RequireRole("role", "Manager");
+                        });
+                    }
                 );
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

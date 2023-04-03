@@ -61,6 +61,7 @@ namespace bbit_2_uzd.Controllers
         // PUT: api/Dzivokli/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("Update/{id}")]
+        [Authorize(Policy = "RequireManagerPrivileges")]
         public async Task<IActionResult> PutApartment(Guid id, ApartmentModifyDTO apartment)
         {
             Apartment updatedApartment;
@@ -91,6 +92,7 @@ namespace bbit_2_uzd.Controllers
         // POST: api/Dzivokli
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("Create")]
+        [Authorize(Policy = "RequireManagerPrivileges")]
         public async Task<ActionResult<ApartmentModifyDTO>> PostApartment(ApartmentModifyDTO apartment)
         {
             Apartment newApartment;
@@ -122,6 +124,7 @@ namespace bbit_2_uzd.Controllers
 
         // DELETE: api/Dzivokli/5
         [HttpDelete("Delete/{id}")]
+        [Authorize(Policy = "RequireManagerPrivileges")]
         public async Task<IActionResult> DeleteApartment(Guid id)
         {
             ApartmentResponse response = await _apartmentService.DeleteApartment(id);

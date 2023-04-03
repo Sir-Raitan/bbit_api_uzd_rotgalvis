@@ -4,6 +4,7 @@ using bbit_2_uzd.Models;
 using bbit_2_uzd.Models.DTO;
 using bbit_2_uzd.Services.Communication;
 using bbit_2_uzd.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -11,6 +12,7 @@ namespace bbit_2_uzd.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize("ApiScope")]
     public class TenantController : ControllerBase
     {
         private ITenantService _tenantService;
@@ -60,6 +62,7 @@ namespace bbit_2_uzd.Controllers
         // PUT: api/Iedzivotaji/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("Update/{id}")]
+        [Authorize(Policy = "RequireManagerPrivileges")]
         public async Task<IActionResult> PutTenant(Guid id, TenantModifyDTO tenant)
         {
             Tenant updatedTenant;
@@ -91,6 +94,7 @@ namespace bbit_2_uzd.Controllers
         // POST: api/Iedzivotaji
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("Create")]
+        [Authorize(Policy = "RequireManagerPrivileges")]
         public async Task<ActionResult<TenantModifyDTO>> PostTenant(TenantModifyDTO tenant)
         {
             Tenant newTenant;
@@ -121,6 +125,7 @@ namespace bbit_2_uzd.Controllers
 
         // DELETE: api/Iedzivotaji/5
         [HttpDelete("Delete/{id}")]
+        [Authorize(Policy = "RequireManagerPrivileges")]
         public async Task<IActionResult> DeleteTenant(Guid id)
         {
             TenantResponse response = await _tenantService.DeleteTenant(id);

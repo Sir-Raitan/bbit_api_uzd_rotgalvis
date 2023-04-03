@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore.Migrations.Internal;
 using Duende.IdentityServer.EntityFramework.DbContexts;
 using Microsoft.Extensions.DependencyInjection;
 using Duende.IdentityServer.EntityFramework.Mappers;
+using Duende.IdentityServer.Services;
+using IdServer.Services;
 
 namespace IdServer
 {
@@ -32,7 +34,7 @@ namespace IdServer
             //add ientity server
             var IdServerConnectionString = builder.Configuration.GetConnectionString(name: "DefaultConnection");
             builder.Services.AddIdentityServer()
-                .AddAspNetIdentity<ApplicationUser>()
+            .AddAspNetIdentity<ApplicationUser>()
             .AddConfigurationStore(options =>
             {
                 options.ConfigureDbContext = b => b.UseSqlite(IdServerConnectionString,
@@ -44,10 +46,12 @@ namespace IdServer
                     sql => sql.MigrationsAssembly(migrationsAssembly));
             });
 
+            builder.Services.AddTransient<IProfileService, ProfileService>();
+
             builder.Services.AddCors(options => options.AddPolicy(
                 name: "AllowWebAppConnection",
                 policy => {
-                    policy.WithOrigins("http://localhost:4200").AllowAnyMethod().AllowAnyHeader();
+                    policy.WithOrigins("https://localhost:4200", "https://localhost:7299").AllowAnyMethod().AllowAnyHeader();
                 }
                 ));
             //add server ui
@@ -61,7 +65,7 @@ namespace IdServer
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseCors("AllowWebAppConnection");
+            app.UseCors("AllowWebAppConnection" );
 
             app.UseIdentityServer();
             app.UseAuthorization();

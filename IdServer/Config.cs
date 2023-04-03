@@ -1,5 +1,6 @@
 ﻿using Duende.IdentityServer.Models;
 using Duende.IdentityServer;
+using IdentityModel;
 
 namespace IdServer
 {
@@ -8,16 +9,14 @@ namespace IdServer
         public static IEnumerable<ApiScope> ApiScopes =>
             new List<ApiScope>
             {
-            new ApiScope("https://localhost:7299/api", "API")
+            new ApiScope("https://localhost:7299/api", "API"),
             };
         public static IEnumerable<ApiResource> ApiResources =>
             new List<ApiResource>
             {
-                new ApiResource{ 
-                    Name = "api",
-                    DisplayName = "API",
-                    Scopes = new List<string> { @"https://localhost:7299/api" }
-                }
+                new ApiResource("api","API"){ 
+                    Scopes = new List<string> { @"https://localhost:7299/api" },
+                },
             };
         public static IEnumerable<Client> Clients =>
             new List<Client>
@@ -75,12 +74,13 @@ namespace IdServer
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
-                        "https://localhost:7299/api"
+                        "https://localhost:7299/api",
+                        "roles"
                     },
                     AllowedCorsOrigins = { "https://localhost:4200" },
 
-                    RedirectUris = { "https://localhost:4200/" },
-                    PostLogoutRedirectUris = { "https://localhost:4200/authentication/logout-callback" }
+                    RedirectUris = { "https://localhost:4200/login-callback" },
+                    PostLogoutRedirectUris = { "https://localhost:4200/logout-callback" }
                 }
             };
         public static IEnumerable<IdentityResource> IdentityResources =>
@@ -88,7 +88,8 @@ namespace IdServer
         {
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
-            new IdentityResources.Email()
+            new IdentityResources.Email(),
+            new IdentityResource("roles","User Role", new List<string>() { "role" })
         };
 
     }

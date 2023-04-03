@@ -4,6 +4,7 @@ using bbit_2_uzd.Models;
 using bbit_2_uzd.Models.DTO;
 using bbit_2_uzd.Services.Communication;
 using bbit_2_uzd.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -11,6 +12,7 @@ namespace bbit_2_uzd.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize("ApiScope")]
     public class HouseController : ControllerBase
     {
         private IHouseService _houseService;
@@ -52,6 +54,7 @@ namespace bbit_2_uzd.Controllers
         // PUT: api/Majas/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("Update/{id}")]
+        [Authorize(Policy = "RequireManagerPrivileges")]
         public async Task<IActionResult> PutHouse(Guid id, HouseModifyDTO house)
         {
             House updatedHouse;
@@ -81,6 +84,7 @@ namespace bbit_2_uzd.Controllers
         // POST: api/Majas
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("Create")]
+        [Authorize(Policy = "RequireManagerPrivileges")]
         public async Task<ActionResult<HouseDTO>> PostHouse(HouseModifyDTO house)
         {
             House newHouse;
@@ -111,6 +115,7 @@ namespace bbit_2_uzd.Controllers
 
         // DELETE: api/Majas/5
         [HttpDelete("Delete/{id}")]
+        [Authorize(Policy = "RequireManagerPrivileges")]
         public async Task<IActionResult> DeleteHouse(Guid id)
         {
             HouseResponse response = await _houseService.DeleteHouse(id);
