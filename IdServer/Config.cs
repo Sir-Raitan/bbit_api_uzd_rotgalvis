@@ -89,7 +89,7 @@ namespace IdServer
             new IdentityResources.OpenId(),
             new IdentityResources.Profile(),
             new IdentityResources.Email(),
-            new IdentityResource("roles","User Role", new List<string>() { "role" })
+            new IdentityResource("roles","User Role", new List<string>() { "role", "resident_id" })
         };
 
     }

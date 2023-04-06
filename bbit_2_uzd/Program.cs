@@ -2,7 +2,6 @@ using bbit_2_uzd.Mapping;
 using bbit_2_uzd.Models;
 using bbit_2_uzd.Services;
 using bbit_2_uzd.Services.Interfaces;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -28,10 +27,14 @@ namespace bbit_2_uzd
                     options.Authority = builder.Configuration["Authentication:Authority"];
                     options.Audience = builder.Configuration["Authentication:Audience"];
 
-                    options.TokenValidationParameters.ValidateAudience = true;
-                    options.TokenValidationParameters.ValidateIssuer = true;
-                    options.TokenValidationParameters.ValidateIssuerSigningKey = true;
-
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateAudience = true,
+                        ValidateIssuer = true,
+                        ValidateIssuerSigningKey = true,
+                        RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+                    };
+                    options.SaveToken = true;
                 });
             builder.Services.AddAuthorization(options =>
                     {
@@ -43,7 +46,24 @@ namespace bbit_2_uzd
                         options.AddPolicy("RequireManagerPrivileges", policy => 
                         {
                             policy.RequireAuthenticatedUser();
-                            policy.RequireRole("role", "Manager");
+                            policy.RequireRole("Manager","Admin");
+                        });
+                        options.AddPolicy("RequireTenantEditPrivileges", policy => 
+                        {
+                            policy.RequireAuthenticatedUser();
+                            policy.RequireAssertion(context => {
+                                if (context.User.IsInRole("Manager") || context.User.IsInRole("Admin"))
+                                {
+                                    return true;
+                                }
+                                else if (context.User.IsInRole("Resident"))
+                                {
+                                    string requestedUrl = context.Resource.ToString();
+                                    string idIsolated = requestedUrl.Substring(requestedUrl.IndexOf("Get/"));
+                                    string requestedId = idIsolated.Substring(4, requestedUrl.IndexOf('?')>-1? requestedUrl.IndexOf('?') : idIsolated.Length);
+                                }
+                                return false;
+                            });
                         });
                     }
                 );

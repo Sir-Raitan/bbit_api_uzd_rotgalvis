@@ -62,7 +62,7 @@ namespace bbit_2_uzd.Controllers
         // PUT: api/Iedzivotaji/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("Update/{id}")]
-        [Authorize(Policy = "RequireManagerPrivileges")]
+        [Authorize(Policy = "RequireTenantEditPrivileges")]
         public async Task<IActionResult> PutTenant(Guid id, TenantModifyDTO tenant)
         {
             Tenant updatedTenant;

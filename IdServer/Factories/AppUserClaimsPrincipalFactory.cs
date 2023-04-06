@@ -26,6 +26,11 @@ namespace IdServer.Factories
                 claimsIdentity.AddClaim(new Claim(JwtClaimTypes.FamilyName, user.LastName));
             }
 
+            if (user.ResidentId != null)
+            {
+                claimsIdentity.AddClaim(new Claim("resident_id", user.ResidentId));
+            }
+
             return claimsIdentity;
         }
     }

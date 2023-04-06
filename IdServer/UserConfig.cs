@@ -18,7 +18,8 @@ namespace IdServer
                FirstName = "Maris",
                LastName = "Rutks",
                UserName = "mar.rutks",
-               Email = "rutks@fake.com"
+               Email = "marutks@sivais.lv",
+               ResidentId  = "1688fdec-4ca3-4906-ab1d-c4c027b0f152"
            };
     }
 }
