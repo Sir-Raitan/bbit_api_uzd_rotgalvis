@@ -66,7 +66,7 @@ namespace IdServer
                 new Client
                 {
                     ClientId = "spa",
-                    ClientName = "Single page app",
+                    ClientName = "Apartment management app",
                     RequireClientSecret = false,
                     AllowedGrantTypes = GrantTypes.Code,
                     AllowedScopes = new List<string>
@@ -77,6 +77,7 @@ namespace IdServer
                         "https://localhost:7299/api",
                         "roles"
                     },
+                    AllowOfflineAccess = true,
                     AllowedCorsOrigins = { "https://localhost:4200" },
 
                     RedirectUris = { "https://localhost:4200/login-callback" },
