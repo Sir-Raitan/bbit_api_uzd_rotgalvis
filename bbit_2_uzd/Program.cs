@@ -75,29 +75,19 @@ namespace bbit_2_uzd
                                     string requestedUrl = ((DefaultHttpContext)context.Resource).Request.Path.ToString();
                                     string idIsolated = requestedUrl.Substring(requestedUrl.IndexOf(command));
                                     string requestedId = idIsolated.Substring(command.Length, requestedUrl.IndexOf('?')>-1? requestedUrl.IndexOf('?')-command.Length : idIsolated.Length-command.Length);
-                                    Debug.WriteLine("requested id: "+requestedId);
-                                    Debug.WriteLine("claims  " );
-                                    foreach (Claim claim in context.User.Claims) {
-                                        Debug.WriteLine(claim.Type+" : "+claim.Value);
- 
-                                            foreach (KeyValuePair<string,string> item in claim.Properties)
-                                            {
-                                                Debug.WriteLine("\t" + item.Key +" : "+item.Value);
-                                            }
-                                    }
 
+                                    //get the user information 
                                     string accessToken = await ((HttpContext)context.Resource).GetTokenAsync("access_token");
 
-                                    //var client = new HttpClient();
-                                    //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-                                    
-                                    //var response = await client.GetAsync("https://identityserver.example.com/connect/userinfo");
-                                    //Debug.WriteLine("");
-                                    //var content = await response.Content.ReadAsStringAsync();
+                                    var client = new HttpClient();
+                                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-                                    //// Parse the userinfo response to get the resident_id claim
-                                    //var userInfo = JObject.Parse(content);
-                                    //var residentId = userInfo.Value<string>("resident_id");
+                                    var response = await client.GetAsync("https://localhost:7183/connect/userinfo");
+                                    var content = await response.Content.ReadAsStringAsync();
+
+                                    // Parse the userinfo response to get the resident_id claim
+                                    var userInfo = JObject.Parse(content);
+                                    var residentId = userInfo.Value<string>("resident_id");
 
                                     if (residentId == residentId)
                                     {
