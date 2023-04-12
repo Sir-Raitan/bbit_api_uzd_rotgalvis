@@ -92,6 +92,7 @@ namespace bbit_2_uzd.Services
             existingTenant.PersonalCode = tenant.PersonalCode;
             existingTenant.DateOfBirth = tenant.DateOfBirth;
             existingTenant.Email = tenant.Email;
+            existingTenant.IsOwner = tenant.IsOwner;
             existingTenant.PhoneNumber = tenant.PhoneNumber;
 
             var apartmentsAdded = tenant.TenantApartments.Where(dz => !existingTenant.TenantApartments.Any(dz2 => dz2.Id == dz.Id));

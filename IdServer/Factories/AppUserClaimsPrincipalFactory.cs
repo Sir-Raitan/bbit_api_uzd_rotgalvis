@@ -2,6 +2,7 @@
 using IdServer.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
+using System.Diagnostics;
 using System.Security.Claims;
 
 namespace IdServer.Factories

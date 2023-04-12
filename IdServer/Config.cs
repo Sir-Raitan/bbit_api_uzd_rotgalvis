@@ -63,12 +63,14 @@ namespace IdServer
                     }
                 },
                 //Spa auth
+                //lifetime uzlikts mazs, lai nevajadzetu ilgi gaidit
                 new Client
                 {
                     ClientId = "spa",
                     ClientName = "Apartment management app",
                     RequireClientSecret = false,
                     AllowedGrantTypes = GrantTypes.Code,
+                    AccessTokenLifetime = 300,
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
@@ -80,8 +82,8 @@ namespace IdServer
                     AllowOfflineAccess = true,
                     AllowedCorsOrigins = { "https://localhost:4200" },
 
-                    RedirectUris = { "https://localhost:4200/login-callback" },
-                    PostLogoutRedirectUris = { "https://localhost:4200/logout-callback" }
+                    RedirectUris = { "https://localhost:4200/" },
+                    PostLogoutRedirectUris = { "https://localhost:4200/" }
                 }
             };
         public static IEnumerable<IdentityResource> IdentityResources =>

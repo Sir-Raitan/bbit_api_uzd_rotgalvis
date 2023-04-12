@@ -2,9 +2,15 @@ using bbit_2_uzd.Mapping;
 using bbit_2_uzd.Models;
 using bbit_2_uzd.Services;
 using bbit_2_uzd.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Linq;
+using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http.Headers;
+using System.Security.Claims;
 
 namespace bbit_2_uzd
 {
@@ -35,6 +41,13 @@ namespace bbit_2_uzd
                         RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
                     };
                     options.SaveToken = true;
+                    //options.SecurityTokenValidators.Add(new JwtSecurityTokenHandler {
+                    //        InboundClaimTypeMap = new Dictionary<string, string>()
+                    //        {
+                    //            { "resident_id", "resident_id" } // maps "resident_id" claim type to "resident_id" claim name
+                    //        }
+                    //    }    
+                    //    );
                 });
             builder.Services.AddAuthorization(options =>
                     {
@@ -51,16 +64,45 @@ namespace bbit_2_uzd
                         options.AddPolicy("RequireTenantEditPrivileges", policy => 
                         {
                             policy.RequireAuthenticatedUser();
-                            policy.RequireAssertion(context => {
+                            policy.RequireAssertion(async context => {
                                 if (context.User.IsInRole("Manager") || context.User.IsInRole("Admin"))
                                 {
                                     return true;
                                 }
                                 else if (context.User.IsInRole("Resident"))
                                 {
-                                    string requestedUrl = context.Resource.ToString();
-                                    string idIsolated = requestedUrl.Substring(requestedUrl.IndexOf("Get/"));
-                                    string requestedId = idIsolated.Substring(4, requestedUrl.IndexOf('?')>-1? requestedUrl.IndexOf('?') : idIsolated.Length);
+                                    string command = "Update/";
+                                    string requestedUrl = ((DefaultHttpContext)context.Resource).Request.Path.ToString();
+                                    string idIsolated = requestedUrl.Substring(requestedUrl.IndexOf(command));
+                                    string requestedId = idIsolated.Substring(command.Length, requestedUrl.IndexOf('?')>-1? requestedUrl.IndexOf('?')-command.Length : idIsolated.Length-command.Length);
+                                    Debug.WriteLine("requested id: "+requestedId);
+                                    Debug.WriteLine("claims  " );
+                                    foreach (Claim claim in context.User.Claims) {
+                                        Debug.WriteLine(claim.Type+" : "+claim.Value);
+ 
+                                            foreach (KeyValuePair<string,string> item in claim.Properties)
+                                            {
+                                                Debug.WriteLine("\t" + item.Key +" : "+item.Value);
+                                            }
+                                    }
+
+                                    string accessToken = await ((HttpContext)context.Resource).GetTokenAsync("access_token");
+
+                                    //var client = new HttpClient();
+                                    //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                                    
+                                    //var response = await client.GetAsync("https://identityserver.example.com/connect/userinfo");
+                                    //Debug.WriteLine("");
+                                    //var content = await response.Content.ReadAsStringAsync();
+
+                                    //// Parse the userinfo response to get the resident_id claim
+                                    //var userInfo = JObject.Parse(content);
+                                    //var residentId = userInfo.Value<string>("resident_id");
+
+                                    if (residentId == residentId)
+                                    {
+                                        return true;
+                                    }                                  
                                 }
                                 return false;
                             });
