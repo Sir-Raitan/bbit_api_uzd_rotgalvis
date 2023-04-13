@@ -86,7 +86,6 @@ namespace bbit_2_uzd.Services
             existingApartment.Floor = apartment.Floor;
             existingApartment.FullArea = apartment.FullArea;
             existingApartment.LivingArea = apartment.LivingArea;
-            //existingApartment.NumberOfTenants = apartment.NumberOfTenants;
             existingApartment.HouseId = apartment.HouseId;
             _context.Entry(existingApartment).State = EntityState.Modified;
 

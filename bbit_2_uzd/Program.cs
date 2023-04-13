@@ -73,8 +73,8 @@ namespace bbit_2_uzd
                                 {
                                     string command = "Update/";
                                     string requestedUrl = ((DefaultHttpContext)context.Resource).Request.Path.ToString();
-                                    string idIsolated = requestedUrl.Substring(requestedUrl.IndexOf(command));
-                                    string requestedId = idIsolated.Substring(command.Length, requestedUrl.IndexOf('?')>-1? requestedUrl.IndexOf('?')-command.Length : idIsolated.Length-command.Length);
+                                    string idIsolated = requestedUrl.Split('/')[4];//<---dirty metode bet ja zin ka izskatas api cels var izgut id bez prob
+                                    string requestedId = idIsolated.Substring(0, requestedUrl.IndexOf('?')>-1? requestedUrl.IndexOf('?') : idIsolated.Length);//check if query params
 
                                     //get the user information 
                                     string accessToken = await ((HttpContext)context.Resource).GetTokenAsync("access_token");

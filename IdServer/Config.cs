@@ -41,6 +41,7 @@ namespace IdServer
                     AllowedCorsOrigins = { "https://localhost:7299" }
                 },
                 // interactive Web App
+                //nemu no piemera - izmanto ja web app taisa no asp.net un ne ka spa
                 new Client
                 {
                     ClientId = "web",

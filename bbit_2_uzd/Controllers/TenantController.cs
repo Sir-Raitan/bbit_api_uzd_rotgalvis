@@ -24,7 +24,6 @@ namespace bbit_2_uzd.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Iedzivotaji
         [HttpGet("GetAll")]
         public async Task<IEnumerable<TenantGetDTO>> GetAllTenants(Guid? apartment_id)
         {
@@ -43,7 +42,6 @@ namespace bbit_2_uzd.Controllers
             return allTenants;
         }
 
-        // GET: api/Iedzivotaji/5
         [HttpGet("Get/{id}")]
         public async Task<ActionResult<TenantGetDTO>> GetTenant(Guid id)
         {
@@ -59,8 +57,6 @@ namespace bbit_2_uzd.Controllers
             return tenant;
         }
 
-        // PUT: api/Iedzivotaji/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("Update/{id}")]
         [Authorize(Policy = "RequireTenantEditPrivileges")]
         public async Task<IActionResult> PutTenant(Guid id, TenantModifyDTO tenant)
@@ -91,8 +87,6 @@ namespace bbit_2_uzd.Controllers
             return Ok(tenantFinal);
         }
 
-        // POST: api/Iedzivotaji
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("Create")]
         [Authorize(Policy = "RequireManagerPrivileges")]
         public async Task<ActionResult<TenantModifyDTO>> PostTenant(TenantModifyDTO tenant)
@@ -123,7 +117,6 @@ namespace bbit_2_uzd.Controllers
             return CreatedAtAction("GetTenant", new { id = response.Resource.Id }, tenantFinal);
         }
 
-        // DELETE: api/Iedzivotaji/5
         [HttpDelete("Delete/{id}")]
         [Authorize(Policy = "RequireManagerPrivileges")]
         public async Task<IActionResult> DeleteTenant(Guid id)

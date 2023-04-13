@@ -25,7 +25,6 @@ namespace bbit_2_uzd.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Majas
         [HttpGet("GetAll")]
         public async Task<IEnumerable<HouseDTO>> GetAllHouses()
         {
@@ -36,7 +35,6 @@ namespace bbit_2_uzd.Controllers
             return housesFinal;
         }
 
-        // GET: api/Majas/5
         [HttpGet("Get/{id}")]
         public async Task<ActionResult<HouseDTO>> GetHouse(Guid id)
         {
@@ -52,8 +50,6 @@ namespace bbit_2_uzd.Controllers
             return house;
         }
 
-        // PUT: api/Majas/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("Update/{id}")]
         [Authorize(Policy = "RequireManagerPrivileges")]
         public async Task<IActionResult> PutHouse(Guid id, HouseModifyDTO house)
@@ -82,8 +78,6 @@ namespace bbit_2_uzd.Controllers
             return Ok(response.Resource);
         }
 
-        // POST: api/Majas
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("Create")]
         [Authorize(Policy = "RequireManagerPrivileges")]
         public async Task<ActionResult<HouseDTO>> PostHouse(HouseModifyDTO house)
@@ -115,7 +109,6 @@ namespace bbit_2_uzd.Controllers
             return CreatedAtAction("GetHouse", new { id = response.Resource.Id }, houseFinal);
         }
 
-        // DELETE: api/Majas/5
         [HttpDelete("Delete/{id}")]
         [Authorize(Policy = "RequireManagerPrivileges")]
         public async Task<IActionResult> DeleteHouse(Guid id)
