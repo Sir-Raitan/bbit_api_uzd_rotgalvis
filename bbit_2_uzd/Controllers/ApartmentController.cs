@@ -4,6 +4,7 @@ using bbit_2_uzd.Models;
 using bbit_2_uzd.Models.DTO;
 using bbit_2_uzd.Services.Communication;
 using bbit_2_uzd.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -11,6 +12,7 @@ namespace bbit_2_uzd.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize("ApiScope")]
     public class ApartmentController : ControllerBase
     {
         private readonly IApartmentService _apartmentService;
@@ -22,7 +24,6 @@ namespace bbit_2_uzd.Controllers
             _mapper = mapper;
         }
 
-        // GET: api/Dzivokli
         [HttpGet("GetAll")]
         public async Task<IEnumerable<ApartmentGetDTO>> GetAllApartments(Guid? house_id)
         {
@@ -41,7 +42,6 @@ namespace bbit_2_uzd.Controllers
             return allApartments;
         }
 
-        // GET: api/Dzivokli/5
         [HttpGet("Get/{id}")]
         public async Task<ActionResult<ApartmentGetDTO>> GetApartment(Guid id)
         {
@@ -56,9 +56,8 @@ namespace bbit_2_uzd.Controllers
             return Ok(apartment);
         }
 
-        // PUT: api/Dzivokli/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("Update/{id}")]
+        [Authorize(Policy = "RequireManagerPrivileges")]
         public async Task<IActionResult> PutApartment(Guid id, ApartmentModifyDTO apartment)
         {
             Apartment updatedApartment;
@@ -86,9 +85,8 @@ namespace bbit_2_uzd.Controllers
             return Ok(apartmentFinal);
         }
 
-        // POST: api/Dzivokli
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("Create")]
+        [Authorize(Policy = "RequireManagerPrivileges")]
         public async Task<ActionResult<ApartmentModifyDTO>> PostApartment(ApartmentModifyDTO apartment)
         {
             Apartment newApartment;
@@ -114,12 +112,11 @@ namespace bbit_2_uzd.Controllers
 
             ApartmentGetDTO apartmentFinal = _mapper.Map<Apartment, ApartmentGetDTO>(response.Resource);
 
-            //return Ok(apartmentFinal);
             return CreatedAtAction("GetApartment", new { id = response.Resource.Id }, apartmentFinal);
         }
 
-        // DELETE: api/Dzivokli/5
         [HttpDelete("Delete/{id}")]
+        [Authorize(Policy = "RequireManagerPrivileges")]
         public async Task<IActionResult> DeleteApartment(Guid id)
         {
             ApartmentResponse response = await _apartmentService.DeleteApartment(id);

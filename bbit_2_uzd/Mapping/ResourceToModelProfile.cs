@@ -15,7 +15,7 @@ namespace bbit_2_uzd.Mapping
             CreateMap<HouseModifyDTO, House>();
             CreateMap<ApartmentModifyDTO, Apartment>();
             CreateMap<ApartmentGetDTO, Apartment>();
-            CreateMap<TenantModifyDTO, Tenant>().ForMember(i => i.TenantApartments, opt => opt.MapFrom(src => src.ApartmnetsId));
+            CreateMap<TenantModifyDTO, Tenant>().ForMember(i => i.TenantApartments, opt => opt.MapFrom(src => src.ApartmentsId));
             CreateMap<TenantGetDTO, Tenant>();
         }
     }
