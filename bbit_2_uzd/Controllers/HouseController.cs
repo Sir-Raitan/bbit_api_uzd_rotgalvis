@@ -6,6 +6,7 @@ using bbit_2_uzd.Services.Communication;
 using bbit_2_uzd.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using System.Net;
 using System.Security.Claims;
 
@@ -26,8 +27,15 @@ namespace bbit_2_uzd.Controllers
         }
 
         [HttpGet("GetAll")]
-        public async Task<IEnumerable<HouseDTO>> GetAllHouses()
+        public async Task<IEnumerable<HouseDTO>> GetAllHouses(Guid? tenant_id)
         {
+            if (tenant_id != null)
+            {
+                var tenantHouses = await _houseService.GetTenantHouses((Guid)tenant_id);
+                var tenantHousesFinal = _mapper.Map<IEnumerable<House>, IEnumerable<HouseDTO>>(tenantHouses);
+                return tenantHousesFinal;
+            }
+
             var houses = await _houseService.GetAllHouses();
 
             var housesFinal = _mapper.Map<IEnumerable<House>, IEnumerable<HouseDTO>>(houses);

@@ -48,6 +48,7 @@ namespace bbit_2_uzd.Models
                     m.Property(p => p.City).IsRequired();
                     m.Property(p => p.Country).IsRequired();
                     m.Property(p => p.PostalCode).IsRequired();
+                    m.HasIndex(p => new { p.Number, p.Street, p.City, p.Country }).IsUnique();
                     m.HasData(
                         house1,
                         house2
@@ -62,6 +63,7 @@ namespace bbit_2_uzd.Models
                     d.Property(p => p.FullArea).IsRequired();
                     d.Property(p => p.LivingArea).IsRequired();
                     d.Property(p => p.HouseId).IsRequired();
+                    d.HasIndex(p => new {p.Number, p.HouseId}).IsUnique();
                     d.HasData(
                             new
                             {
@@ -127,10 +129,10 @@ namespace bbit_2_uzd.Models
                     i.HasKey(p => p.Id);
                     i.Property(p => p.PersonalCode).IsRequired();
                     i.Property(p => p.PhoneNumber).IsRequired();
-                    i.Property(p => p.Email).IsRequired();
+                    i.Property(p => p.Email).IsRequired(false);
                     i.HasIndex(p => p.PersonalCode).IsUnique();
                     i.HasIndex(p => p.PhoneNumber).IsUnique();
-                    i.HasIndex(p => p.Email).IsUnique();
+                    i.HasIndex(p => p.Email).HasFilter("Email IS NOT NULL AND Email <> ''").IsUnique();
                     i.HasData(
                             new
                             {

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using bbit_2_uzd.Models;
 
@@ -10,9 +11,11 @@ using bbit_2_uzd.Models;
 namespace bbit_2_uzd.Migrations
 {
     [DbContext(typeof(AppDatabaseConfig))]
-    partial class AppDatabaseConfigModelSnapshot : ModelSnapshot
+    [Migration("20230421082724_extra_indexes")]
+    partial class extra_indexes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

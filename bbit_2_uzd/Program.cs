@@ -41,13 +41,6 @@ namespace bbit_2_uzd
                         RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
                     };
                     options.SaveToken = true;
-                    //options.SecurityTokenValidators.Add(new JwtSecurityTokenHandler {
-                    //        InboundClaimTypeMap = new Dictionary<string, string>()
-                    //        {
-                    //            { "resident_id", "resident_id" } // maps "resident_id" claim type to "resident_id" claim name
-                    //        }
-                    //    }    
-                    //    );
                 });
             builder.Services.AddAuthorization(options =>
                     {
@@ -89,7 +82,7 @@ namespace bbit_2_uzd
                                     var userInfo = JObject.Parse(content);
                                     var residentId = userInfo.Value<string>("resident_id");
 
-                                    if (residentId == residentId)
+                                    if (requestedId == residentId)
                                     {
                                         return true;
                                     }                                  
