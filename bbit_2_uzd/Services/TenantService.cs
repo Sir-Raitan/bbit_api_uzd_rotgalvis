@@ -67,9 +67,10 @@ namespace bbit_2_uzd.Services
 
                 return new TenantResponse(tenant);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return new TenantResponse($"There was a probelm while saving tenant data: {ex.Message}");
+                string message = e.InnerException == null ? e.Message : e.InnerException.Message;
+                return new TenantResponse($"There was a probelm while saving tenant data: {message}");
             }
         }
 
@@ -125,9 +126,10 @@ namespace bbit_2_uzd.Services
 
                 return new TenantResponse(existingTenant);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return new TenantResponse($"There was a problem while updating tenant information: {ex.Message}");
+                string message = e.InnerException == null ? e.Message : e.InnerException.Message;
+                return new TenantResponse($"There was a problem while updating tenant information: {message}");
             }
         }
 
@@ -157,9 +159,10 @@ namespace bbit_2_uzd.Services
 
                 return new TenantResponse(tenant);
             }
-            catch (Exception ex)
-            {
-                return new TenantResponse($"There was a problem removing the tenant: {ex.Message}");
+            catch (Exception e) 
+            { 
+                string message = e.InnerException == null ? e.Message : e.InnerException.Message; 
+                return new TenantResponse($"There was a problem removing the tenant: {message}"); 
             }
         }
     }

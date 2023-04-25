@@ -14,7 +14,7 @@ namespace IdServer
         public static IEnumerable<ApiResource> ApiResources =>
             new List<ApiResource>
             {
-                new ApiResource("api","API"){ 
+                new ApiResource("api","API"){
                     Scopes = new List<string> { @"https://localhost:7299/api" },
                 },
             };

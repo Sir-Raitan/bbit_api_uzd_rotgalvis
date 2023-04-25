@@ -63,9 +63,10 @@ namespace bbit_2_uzd.Services
 
                 return new ApartmentResponse(apartment);
             }
-            catch (Exception ex)
+            catch (Exception e) 
             {
-                return new ApartmentResponse($"There was a probelm while saving apartment data: {ex.Message}");
+                string message = e.InnerException == null ? e.Message : e.InnerException.Message;
+                return new ApartmentResponse($"There was a probelm while saving apartment data: {message}"); 
             }
         }
 
@@ -102,9 +103,10 @@ namespace bbit_2_uzd.Services
 
                 return new ApartmentResponse(existingApartment);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return new ApartmentResponse($"There was a problem while updating apartment information: {ex.Message}");
+                string message = e.InnerException == null ? e.Message : e.InnerException.Message;
+                return new ApartmentResponse($"There was a problem while updating apartment information: {message}");
             }
         }
 
@@ -128,9 +130,10 @@ namespace bbit_2_uzd.Services
 
                 return new ApartmentResponse(apartment);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return new ApartmentResponse($"There was a problem removing the apartment: {ex.Message}");
+                string message = e.InnerException == null ? e.Message : e.InnerException.Message;
+                return new ApartmentResponse($"There was a problem removing the apartment: {message}");
             }
         }
     }

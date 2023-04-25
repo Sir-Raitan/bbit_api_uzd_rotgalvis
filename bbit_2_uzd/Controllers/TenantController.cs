@@ -68,11 +68,13 @@ namespace bbit_2_uzd.Controllers
             }
             catch (AutoMapperMappingException e)
             {
-                return this.ResolveError(HttpStatusCode.BadRequest, $"Some of the provided values are invalid: {e.Message}");
+                string message = e.InnerException == null ? e.Message : e.InnerException.Message;
+                return this.ResolveError(HttpStatusCode.BadRequest, $"Some of the provided values are invalid: {message}");
             }
             catch (Exception e)
             {
-                return this.ResolveError(HttpStatusCode.InternalServerError, $"There was a problem creating updating the tenant: {e.Message}");
+                string message = e.InnerException == null ? e.Message : e.InnerException.Message;
+                return this.ResolveError(HttpStatusCode.InternalServerError, $"There was a problem creating updating the tenant: {message}");
             }
 
             TenantResponse response = await _tenantService.PutTenant(id, updatedTenant);
@@ -98,11 +100,13 @@ namespace bbit_2_uzd.Controllers
             }
             catch (AutoMapperMappingException e)
             {
-                return this.ResolveError(HttpStatusCode.BadRequest, $"Some of the provided values are invalid: {e.Message}");
+                string message = e.InnerException == null ? e.Message : e.InnerException.Message;
+                return this.ResolveError(HttpStatusCode.BadRequest, $"Some of the provided values are invalid: {message}");
             }
             catch (Exception e)
             {
-                return this.ResolveError(HttpStatusCode.InternalServerError, $"There was a problem while creating the tenant: {e.Message}");
+                string message = e.InnerException == null ? e.Message : e.InnerException.Message;
+                return this.ResolveError(HttpStatusCode.InternalServerError, $"There was a problem while creating the tenant: {message}");
             }
 
             TenantResponse response = await _tenantService.PostTenant(newTenant);
