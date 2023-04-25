@@ -25,15 +25,23 @@ namespace bbit_2_uzd.Controllers
         }
 
         [HttpGet("GetAll")]
-        public async Task<IEnumerable<ApartmentGetDTO>> GetAllApartments(Guid? house_id)
+        public async Task<IEnumerable<ApartmentGetDTO>> GetAllApartments(Guid? house_id, Guid? tenant_id)
         {
-            if (house_id != null)
+            if (house_id != null && tenant_id == null)
             {
                 var apartmentsRaw = await _apartmentService.GetApartmentsFromHouse((Guid)house_id);
 
                 var apartments = _mapper.Map<IEnumerable<Apartment>, IEnumerable<ApartmentGetDTO>>(apartmentsRaw);
 
                 return apartments;
+            }
+            else if (house_id != null && tenant_id != null)
+            {
+                var tenantApartmentsRaw = await _apartmentService.GetTenantApartmentsFromHouse((Guid)house_id,(Guid)tenant_id);
+
+                var tenantApartments = _mapper.Map<IEnumerable<Apartment>, IEnumerable<ApartmentGetDTO>>(tenantApartmentsRaw);
+
+                return tenantApartments;
             }
             var allApartmentsRaw = await _apartmentService.GetAllApartments();
 

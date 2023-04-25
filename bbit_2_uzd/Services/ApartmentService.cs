@@ -25,6 +25,12 @@ namespace bbit_2_uzd.Services
             return await _context.Apartments.Where(a => a.HouseId == id).ToListAsync();
         }
 
+        public async Task<IEnumerable<Apartment>> GetTenantApartmentsFromHouse(Guid houseId, Guid tenantId)
+        {
+            var tenant = await _context.Tenants.FirstOrDefaultAsync(t => t.Id == tenantId);
+            var apartments = tenant.TenantApartments.Where(a => a.HouseId == houseId).ToList();
+            return apartments;
+        }
         public async Task<ApartmentResponse> GetApartment(Guid id)
         {
             if (_context.Apartments == null)

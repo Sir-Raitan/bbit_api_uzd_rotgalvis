@@ -9,6 +9,8 @@ namespace bbit_2_uzd.Services.Interfaces
         
         public Task<IEnumerable<Apartment>> GetApartmentsFromHouse(Guid id);
 
+        public Task<IEnumerable<Apartment>> GetTenantApartmentsFromHouse(Guid houseID, Guid tenantID);
+
         public Task<ApartmentResponse> GetApartment(Guid id);
 
         public Task<ApartmentResponse> PutApartment(Guid id, Apartment dzivoklis);
