@@ -17,8 +17,10 @@ namespace bbit_2_uzd
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            //Add constants file
+            builder.Configuration.AddJsonFile("appconstants.json");
 
+            // Add services to the container.
             builder.Services.AddControllers();
             builder.Services.AddDbContext<AppDatabaseConfig>();
 
@@ -49,20 +51,19 @@ namespace bbit_2_uzd
                         options.AddPolicy("RequireManagerPrivileges", policy =>
                         {
                             policy.RequireAuthenticatedUser();
-                            policy.RequireRole("Manager", "Admin");
+                            policy.RequireRole(builder.Configuration["UserRoles:ManagerRole"], builder.Configuration["UserRoles:AdminRole"]);
                         });
                         options.AddPolicy("RequireTenantEditPrivileges", policy =>
                         {
                             policy.RequireAuthenticatedUser();
                             policy.RequireAssertion(async context =>
                             {
-                                if (context.User.IsInRole("Manager") || context.User.IsInRole("Admin"))
+                                if (context.User.IsInRole(builder.Configuration["UserRoles:ManagerRole"]) || context.User.IsInRole(builder.Configuration["UserRoles:AdminRole"]))
                                 {
                                     return true;
                                 }
-                                else if (context.User.IsInRole("Resident"))
+                                else if (context.User.IsInRole(builder.Configuration["UserRoles:ResidentRole"]))
                                 {
-                                    string command = "Update/";
                                     string requestedUrl = ((DefaultHttpContext)context.Resource).Request.Path.ToString();
                                     string idIsolated = requestedUrl.Split('/')[4];//<---dirty metode bet ja zin ka izskatas api cels var izgut id bez prob
                                     string requestedId = idIsolated.Substring(0, requestedUrl.IndexOf('?') > -1 ? requestedUrl.IndexOf('?') : idIsolated.Length);//check if query params
@@ -70,7 +71,7 @@ namespace bbit_2_uzd
                                     //get the user information
                                     string accessToken = await ((HttpContext)context.Resource).GetTokenAsync("access_token");
 
-                                    var client = new HttpClient();
+                                    var client = new HttpClient();  
                                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
                                     var response = await client.GetAsync("https://localhost:7183/connect/userinfo");

@@ -1,0 +1,11 @@
+{
+  "UserRoles": {
+    "AdminRole": "Admin",
+    "ManagerRole": "Manager",
+    "ResidentRole": "Resident"
+  },
+  "Authentication": {
+    "Authority": "https://localhost:7183",
+    "Audience": "api"
+  }
+}
