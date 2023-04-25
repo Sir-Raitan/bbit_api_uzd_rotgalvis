@@ -67,11 +67,13 @@ namespace bbit_2_uzd.Controllers
             }
             catch (AutoMapperMappingException e)
             {
-                return this.ResolveError(HttpStatusCode.BadRequest, $"Some of the provided values are invalid: {e.Message}");
+                string message = e.InnerException == null ? e.Message : e.InnerException.Message;
+                return this.ResolveError(HttpStatusCode.BadRequest, $"Some of the provided values are invalid: {message}");
             }
             catch (Exception e)
             {
-                return this.ResolveError(HttpStatusCode.InternalServerError, $"There was a problem while updating the apartment: {e.Message}");
+                string message = e.InnerException == null ? e.Message : e.InnerException.Message;
+                return this.ResolveError(HttpStatusCode.InternalServerError, $"There was a problem while updating the apartment: {message}");
             }
 
             ApartmentResponse response = await _apartmentService.PutApartment(id, updatedApartment);
@@ -96,11 +98,13 @@ namespace bbit_2_uzd.Controllers
             }
             catch (AutoMapperMappingException e)
             {
-                return this.ResolveError(HttpStatusCode.BadRequest, $"Some of the provided values are invalid: {e.Message}");
+                string message = e.InnerException == null ? e.Message : e.InnerException.Message;
+                return this.ResolveError(HttpStatusCode.BadRequest, $"Some of the provided values are invalid: {message}");
             }
             catch (Exception e)
             {
-                return this.ResolveError(HttpStatusCode.InternalServerError, $"There was a problem while creating the apartment: {e.Message}");
+                string message = e.InnerException == null ? e.Message : e.InnerException.Message;
+                return this.ResolveError(HttpStatusCode.InternalServerError, $"There was a problem while creating the apartment: {message}");
             }
 
             ApartmentResponse response = await _apartmentService.PostApartment(newApartment);

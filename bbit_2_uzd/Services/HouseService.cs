@@ -60,9 +60,10 @@ namespace bbit_2_uzd.Services
 
                 return new HouseResponse(house);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return new HouseResponse($"There was a probelm while saving house data: {ex.Message}");
+                string message = e.InnerException == null ? e.Message : e.InnerException.Message;
+                return new HouseResponse($"There was a probelm while saving house data: {message}");
             }
         }
 
@@ -92,9 +93,10 @@ namespace bbit_2_uzd.Services
 
                 return new HouseResponse(existingHouse);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return new HouseResponse($"There was a problem while updating house information: {ex.Message}");
+                string message = e.InnerException == null ? e.Message : e.InnerException.Message;
+                return new HouseResponse($"There was a problem while updating house information: {message}");
             }
         }
 
@@ -118,9 +120,10 @@ namespace bbit_2_uzd.Services
 
                 return new HouseResponse(house);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return new HouseResponse($"There was a problem removing the house: {ex.Message}");
+                string message = e.InnerException == null ? e.Message : e.InnerException.Message;
+                return new HouseResponse($"There was a problem removing the house: {message}");
             }
         }
     }

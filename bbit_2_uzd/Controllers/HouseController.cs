@@ -69,11 +69,13 @@ namespace bbit_2_uzd.Controllers
             }
             catch (AutoMapperMappingException e)
             {
-                return this.ResolveError(HttpStatusCode.BadRequest, $"Some of the provided values are invalid: {e.Message}");
+                string message = e.InnerException == null ? e.Message : e.InnerException.Message;
+                return this.ResolveError(HttpStatusCode.BadRequest, $"Some of the provided values are invalid: {message}");
             }
             catch (Exception e)
             {
-                return this.ResolveError(HttpStatusCode.InternalServerError, $"There was a problem while updating the house: {e.Message}");
+                string message = e.InnerException == null ? e.Message : e.InnerException.Message;
+                return this.ResolveError(HttpStatusCode.InternalServerError, $"There was a problem while updating the house: {message}");
             }
 
             HouseResponse response = await _houseService.PutHouse(id, updatedHouse);
@@ -98,11 +100,13 @@ namespace bbit_2_uzd.Controllers
             }
             catch (AutoMapperMappingException e)
             {
-                return this.ResolveError(HttpStatusCode.BadRequest, $"Some of the provided values are invalid: {e.Message}");
+                string message = e.InnerException == null ? e.Message : e.InnerException.Message;
+                return this.ResolveError(HttpStatusCode.BadRequest, $"Some of the provided values are invalid: {message}");
             }
             catch (Exception e)
             {
-                return this.ResolveError(HttpStatusCode.InternalServerError, $"There was a problem while creating the house: {e.Message}");
+                string message = e.InnerException == null ? e.Message : e.InnerException.Message;
+                return this.ResolveError(HttpStatusCode.InternalServerError, $"There was a problem while creating the house: {message}");
             }
 
             HouseResponse response = await _houseService.PostHouse(newHouse);
