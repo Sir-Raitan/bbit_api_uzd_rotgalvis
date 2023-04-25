@@ -6,9 +6,7 @@ using bbit_2_uzd.Services.Communication;
 using bbit_2_uzd.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 using System.Net;
-using System.Security.Claims;
 
 namespace bbit_2_uzd.Controllers
 {
@@ -92,7 +90,6 @@ namespace bbit_2_uzd.Controllers
         [Authorize(Policy = "RequireManagerPrivileges")]
         public async Task<ActionResult<HouseDTO>> PostHouse(HouseModifyDTO house)
         {
-           
             House newHouse;
             try
             {

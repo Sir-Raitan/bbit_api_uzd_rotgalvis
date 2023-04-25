@@ -63,7 +63,7 @@ namespace bbit_2_uzd.Models
                     d.Property(p => p.FullArea).IsRequired();
                     d.Property(p => p.LivingArea).IsRequired();
                     d.Property(p => p.HouseId).IsRequired();
-                    d.HasIndex(p => new {p.Number, p.HouseId}).IsUnique();
+                    d.HasIndex(p => new { p.Number, p.HouseId }).IsUnique();
                     d.HasData(
                             new
                             {

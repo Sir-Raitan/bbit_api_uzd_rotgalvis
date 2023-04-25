@@ -46,15 +46,16 @@ namespace bbit_2_uzd
                             policy.RequireAuthenticatedUser();
                             policy.RequireClaim("scope", "https://localhost:7299/api");
                         });
-                        options.AddPolicy("RequireManagerPrivileges", policy => 
+                        options.AddPolicy("RequireManagerPrivileges", policy =>
                         {
                             policy.RequireAuthenticatedUser();
-                            policy.RequireRole("Manager","Admin");
+                            policy.RequireRole("Manager", "Admin");
                         });
-                        options.AddPolicy("RequireTenantEditPrivileges", policy => 
+                        options.AddPolicy("RequireTenantEditPrivileges", policy =>
                         {
                             policy.RequireAuthenticatedUser();
-                            policy.RequireAssertion(async context => {
+                            policy.RequireAssertion(async context =>
+                            {
                                 if (context.User.IsInRole("Manager") || context.User.IsInRole("Admin"))
                                 {
                                     return true;
@@ -64,9 +65,9 @@ namespace bbit_2_uzd
                                     string command = "Update/";
                                     string requestedUrl = ((DefaultHttpContext)context.Resource).Request.Path.ToString();
                                     string idIsolated = requestedUrl.Split('/')[4];//<---dirty metode bet ja zin ka izskatas api cels var izgut id bez prob
-                                    string requestedId = idIsolated.Substring(0, requestedUrl.IndexOf('?')>-1? requestedUrl.IndexOf('?') : idIsolated.Length);//check if query params
+                                    string requestedId = idIsolated.Substring(0, requestedUrl.IndexOf('?') > -1 ? requestedUrl.IndexOf('?') : idIsolated.Length);//check if query params
 
-                                    //get the user information 
+                                    //get the user information
                                     string accessToken = await ((HttpContext)context.Resource).GetTokenAsync("access_token");
 
                                     var client = new HttpClient();
@@ -82,7 +83,7 @@ namespace bbit_2_uzd
                                     if (requestedId == residentId)
                                     {
                                         return true;
-                                    }                                  
+                                    }
                                 }
                                 return false;
                             });
@@ -109,9 +110,9 @@ namespace bbit_2_uzd
                         }
                     }
                 });//$"{builder.Configuration[]}/connect/token"),
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement 
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
-                    {   
+                    {
                         new OpenApiSecurityScheme
                         {
                             Reference = new OpenApiReference
@@ -131,18 +132,17 @@ namespace bbit_2_uzd
             builder.Services.AddScoped<IApartmentService, ApartmentService>();
             builder.Services.AddScoped<IHouseService, HouseService>();
             builder.Services.AddScoped<ITenantService, TenantService>();
-            
-            
+
             //webapp config
             builder.Services.AddCors(options => options.AddPolicy(
                 name: "AllowWebAppConnection",
-                policy => {
+                policy =>
+                {
                     policy.WithOrigins("https://localhost:4200").AllowAnyMethod().AllowAnyHeader();
                 }
                 ));
             var app = builder.Build();
 
-            
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {

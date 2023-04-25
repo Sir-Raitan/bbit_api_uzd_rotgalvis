@@ -27,7 +27,7 @@ namespace bbit_2_uzd.Controllers
         [HttpGet("GetAll")]
         public async Task<IEnumerable<TenantGetDTO>> GetAllTenants(Guid? apartment_id)
         {
-            if (apartment_id != null) 
+            if (apartment_id != null)
             {
                 var tenantsRaw = await _tenantService.GetTenantsWithApartment((Guid)apartment_id);
 

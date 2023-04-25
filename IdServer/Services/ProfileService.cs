@@ -13,6 +13,7 @@ namespace IdServer.Services
         private readonly IUserClaimsPrincipalFactory<ApplicationUser> _userClaimsPrincipalFactory;
         private readonly UserManager<ApplicationUser> _userMgr;
         private readonly RoleManager<IdentityRole> _roleMgr;
+
         public ProfileService(
             UserManager<ApplicationUser> userMgr,
             RoleManager<IdentityRole> roleMgr,
@@ -22,6 +23,7 @@ namespace IdServer.Services
             _roleMgr = roleMgr;
             _userClaimsPrincipalFactory = userClaimsPrincipalFactory;
         }
+
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
             string sub = context.Subject.GetSubjectId();

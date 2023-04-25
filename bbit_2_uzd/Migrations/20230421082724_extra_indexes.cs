@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -38,7 +37,7 @@ namespace bbit_2_uzd.Migrations
             migrationBuilder.Sql("INSERT INTO new_Tenants SELECT Id, Name, Surname, PersonalCode, DateOfBirth, PhoneNumber, Email, IsOwner FROM Tenants;");
 
             migrationBuilder.DropTable("Tenants");
-            
+
             migrationBuilder.RenameTable(
                 name: "new_Tenants",
                 newName: "Tenants");

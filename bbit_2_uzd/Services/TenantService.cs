@@ -19,6 +19,7 @@ namespace bbit_2_uzd.Services
         {
             return await _context.Tenants.Include(t => t.TenantApartments).ToListAsync();
         }
+
         public async Task<IEnumerable<Tenant>> GetTenantsWithApartment(Guid id)
         {
             return await _context.Tenants.Include(t => t.TenantApartments).Where(t => t.TenantApartments.Any(a => a.Id == id)).ToListAsync();
@@ -159,10 +160,10 @@ namespace bbit_2_uzd.Services
 
                 return new TenantResponse(tenant);
             }
-            catch (Exception e) 
-            { 
-                string message = e.InnerException == null ? e.Message : e.InnerException.Message; 
-                return new TenantResponse($"There was a problem removing the tenant: {message}"); 
+            catch (Exception e)
+            {
+                string message = e.InnerException == null ? e.Message : e.InnerException.Message;
+                return new TenantResponse($"There was a problem removing the tenant: {message}");
             }
         }
     }

@@ -1,15 +1,12 @@
+using Duende.IdentityServer.EntityFramework.DbContexts;
+using Duende.IdentityServer.EntityFramework.Mappers;
+using Duende.IdentityServer.Services;
 using IdServer.Data;
 using IdServer.Factories;
 using IdServer.Models;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using IdServer.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations.Internal;
-using Duende.IdentityServer.EntityFramework.DbContexts;
-using Microsoft.Extensions.DependencyInjection;
-using Duende.IdentityServer.EntityFramework.Mappers;
-using Duende.IdentityServer.Services;
-using IdServer.Services;
 
 namespace IdServer
 {
@@ -26,7 +23,7 @@ namespace IdServer
                 options.UseSqlite(connectionString, opt => opt.MigrationsAssembly(migrationsAssembly));
             });
             //identity config
-            builder.Services.AddIdentity<ApplicationUser,IdentityRole>()
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddClaimsPrincipalFactory<AppUserClaimsPrincipalFactory>()
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<AppDbContext>();
@@ -50,7 +47,8 @@ namespace IdServer
 
             builder.Services.AddCors(options => options.AddPolicy(
                 name: "AllowWebAppConnection",
-                policy => {
+                policy =>
+                {
                     policy.WithOrigins("https://localhost:4200", "https://localhost:7299").AllowAnyMethod().AllowAnyHeader();
                 }
                 ));
@@ -65,7 +63,7 @@ namespace IdServer
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseCors("AllowWebAppConnection" );
+            app.UseCors("AllowWebAppConnection");
 
             app.UseIdentityServer();
             app.UseAuthorization();
@@ -137,7 +135,8 @@ namespace IdServer
 
             app.Run();
         }
-        static async Task SeedUser(ApplicationUser user, UserManager<ApplicationUser> userManager, string? role = null) 
+
+        private static async Task SeedUser(ApplicationUser user, UserManager<ApplicationUser> userManager, string? role = null)
         {
             if (await userManager.FindByNameAsync(user.UserName) == null)
             {

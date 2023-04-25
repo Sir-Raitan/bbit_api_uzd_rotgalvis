@@ -31,6 +31,7 @@ namespace bbit_2_uzd.Services
             var apartments = tenant.TenantApartments.Where(a => a.HouseId == houseId).ToList();
             return apartments;
         }
+
         public async Task<ApartmentResponse> GetApartment(Guid id)
         {
             if (_context.Apartments == null)
@@ -69,10 +70,10 @@ namespace bbit_2_uzd.Services
 
                 return new ApartmentResponse(apartment);
             }
-            catch (Exception e) 
+            catch (Exception e)
             {
                 string message = e.InnerException == null ? e.Message : e.InnerException.Message;
-                return new ApartmentResponse($"There was a probelm while saving apartment data: {message}"); 
+                return new ApartmentResponse($"There was a probelm while saving apartment data: {message}");
             }
         }
 

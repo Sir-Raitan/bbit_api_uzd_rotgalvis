@@ -12,6 +12,7 @@ namespace IdServer
                 UserName = "janis.tests",
                 Email = "Janis.tests@fake.com"
             };
+
         public static ApplicationUser ResidentUser =>
            new ApplicationUser
            {
@@ -19,7 +20,7 @@ namespace IdServer
                LastName = "Rutks",
                UserName = "mar.rutks",
                Email = "marutks@sivais.lv",
-               ResidentId  = "1688fdec-4ca3-4906-ab1d-c4c027b0f152"
+               ResidentId = "1688fdec-4ca3-4906-ab1d-c4c027b0f152"
            };
     }
 }

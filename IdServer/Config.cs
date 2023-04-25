@@ -1,6 +1,5 @@
-﻿using Duende.IdentityServer.Models;
-using Duende.IdentityServer;
-using IdentityModel;
+﻿using Duende.IdentityServer;
+using Duende.IdentityServer.Models;
 
 namespace IdServer
 {
@@ -11,6 +10,7 @@ namespace IdServer
             {
             new ApiScope("https://localhost:7299/api", "API"),
             };
+
         public static IEnumerable<ApiResource> ApiResources =>
             new List<ApiResource>
             {
@@ -18,6 +18,7 @@ namespace IdServer
                     Scopes = new List<string> { @"https://localhost:7299/api" },
                 },
             };
+
         public static IEnumerable<Client> Clients =>
             new List<Client>
             {
@@ -48,7 +49,7 @@ namespace IdServer
                     ClientSecrets = { new Secret("secret".Sha256()) },
 
                     AllowedGrantTypes = GrantTypes.Code,
-            
+
                     // where to redirect to after login
                     RedirectUris = { "https://localhost:4200/signin-oidc" },
 
@@ -87,6 +88,7 @@ namespace IdServer
                     PostLogoutRedirectUris = { "https://localhost:4200/" }
                 }
             };
+
         public static IEnumerable<IdentityResource> IdentityResources =>
         new List<IdentityResource>
         {
@@ -95,6 +97,5 @@ namespace IdServer
             new IdentityResources.Email(),
             new IdentityResource("roles","User Role", new List<string>() { "role", "resident_id" })
         };
-
     }
 }

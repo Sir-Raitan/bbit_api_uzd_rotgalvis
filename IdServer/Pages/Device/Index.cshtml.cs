@@ -56,7 +56,8 @@ public class Index : PageModel
             return Page();
         }
 
-        Input = new InputModel { 
+        Input = new InputModel
+        {
             UserCode = userCode,
         };
 
@@ -126,7 +127,6 @@ public class Index : PageModel
         View = await BuildViewModelAsync(Input.UserCode, Input);
         return Page();
     }
-
 
     private async Task<ViewModel> BuildViewModelAsync(string userCode, InputModel model = null)
     {
